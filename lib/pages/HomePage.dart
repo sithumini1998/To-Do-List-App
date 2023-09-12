@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_app/Service/Auth_Service.dart';
+import 'package:to_do_app/pages/SignUpPage.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -9,8 +11,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _MyWidgetState extends State<HomePage> {
+  AuthClass authClass = AuthClass();
   @override
   Widget build(BuildContext context) {
-    return const Scaffold();
+    return  Scaffold(
+      appBar: AppBar(actions: [
+           IconButton(
+              icon: Icon(Icons.logout),
+              onPressed: () async {
+               await authClass.logout();
+                 Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (builder) => SignupPage()),
+                    (route) => false);
+              }),
+      ],),
+    );
   }
 }
