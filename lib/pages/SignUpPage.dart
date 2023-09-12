@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:to_do_app/Service/Auth_Service.dart';
 import 'package:to_do_app/pages/HomePage.dart';
+import 'package:to_do_app/pages/PhoneAuth.dart';
 import 'package:to_do_app/pages/SignInPage.dart';
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -35,7 +36,10 @@ class _MyWidgetState extends State<SignupPage> {
                 await authClass.googleSignIn(context);
               }),
         SizedBox(height: 15,),
-        buttonitem("assets/phone.svg","continue with Mobile" ,25,(){}),
+        buttonitem("assets/phone.svg","continue with Mobile" ,25,(){
+           Navigator.push(context,
+                    MaterialPageRoute(builder: (builder) => PhoneAuthPage()));
+        }),
         SizedBox(height: 15,),
         Text("OR",style: TextStyle(color: Colors.white,fontSize: 16),),
         SizedBox(height: 15,),
