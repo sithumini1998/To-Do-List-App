@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'package:to_do_app/Service/Auth_Service.dart';
+import 'package:to_do_app/pages/AddTodo.dart';
 import 'package:to_do_app/pages/HomePage.dart';
 
 import 'package:to_do_app/pages/SignUpPage.dart';
@@ -40,8 +41,9 @@ class _MyWidgetState extends State<MyApp> {
   }
   @override
   Widget build(BuildContext context) {
+     
     return MaterialApp(
-      home: currentPage,
+      home: AddTodoPage(),
     );
   }
 }

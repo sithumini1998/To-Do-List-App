@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
+import 'package:to_do_app/Service/Auth_Service.dart';
 
 class  PhoneAuthPage extends StatefulWidget {
   const  PhoneAuthPage({super.key});
@@ -16,6 +17,10 @@ class _MyWidgetState extends State< PhoneAuthPage> {
   int start = 30;
   bool wait = false;
   String buttonName = "Send";
+  TextEditingController phoneController = TextEditingController();
+  AuthClass authClass = AuthClass();
+   String verificationIdFinal = "";
+  String smsCode = "";
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -93,22 +98,31 @@ class _MyWidgetState extends State< PhoneAuthPage> {
                    ],
                 ),
               ),
-               Container(
-              height: 60,
-                  width: MediaQuery.of(context).size.width - 60,
-                  decoration: BoxDecoration(
-                      color: Color(0xffff9601),
-                      borderRadius: BorderRadius.circular(15)),
-                      child: Center(
-                         child: Text(
-                      "Lets Go",
-                      style: TextStyle(
-                          fontSize: 17,
-                          color: Color(0xfffbe2ae),
-                          fontWeight: FontWeight.w700),
-                    ),
+              
+               SizedBox(
+                height: 150,
+              ),
+               InkWell(
+                onTap: (){
+                  authClass.signInwithPhoneNumber(verificationIdFinal, smsCode, context);
+                },
+                 child: Container(
+                             height: 60,
+                    width: MediaQuery.of(context).size.width - 60,
+                    decoration: BoxDecoration(
+                        color: Color(0xffff9601),
+                        borderRadius: BorderRadius.circular(15)),
+                        child: Center(
+                           child: Text(
+                        "Lets Go",
+                        style: TextStyle(
+                            fontSize: 17,
+                            color: Color(0xfffbe2ae),
+                            fontWeight: FontWeight.w700),
                       ),
-            ),
+                        ),
+                           ),
+               ),
             ],
            
            ),
@@ -147,11 +161,15 @@ class _MyWidgetState extends State< PhoneAuthPage> {
   fieldStyle: FieldStyle.underline,
   onCompleted: (pin) {
     print("Completed: " + pin);
+      setState(() {
+          smsCode = pin;
+        });
   },
 );  
 }
   Widget textfield(){
     return Container(
+       
       width: MediaQuery.of(context).size.width - 40,
         height: 60,
       decoration: BoxDecoration(
@@ -159,6 +177,7 @@ class _MyWidgetState extends State< PhoneAuthPage> {
         borderRadius: BorderRadius.circular(15),
       ),
       child: TextFormField(
+         controller: phoneController,
         decoration: InputDecoration(
            border: InputBorder.none,
            hintText: "Enter your phone Number",
@@ -179,6 +198,7 @@ class _MyWidgetState extends State< PhoneAuthPage> {
                       wait = true;
                       buttonName = "Resend";
                     });
+                    await authClass.verifyPhoneNumber(  "+94  ${phoneController.text}", context,setData);
             },
              child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
@@ -192,6 +212,12 @@ class _MyWidgetState extends State< PhoneAuthPage> {
         ),
       ),
     );
+  }
+    void setData(String verificationId) {
+     setState(() {
+      verificationIdFinal = verificationId;
+    });
+    startTimer();
   }
   
 }
