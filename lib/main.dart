@@ -43,7 +43,7 @@ class _MyWidgetState extends State<MyApp> {
   Widget build(BuildContext context) {
      
     return MaterialApp(
-      home: AddTodoPage(),
+      home: HomePage(),
     );
   }
 }
