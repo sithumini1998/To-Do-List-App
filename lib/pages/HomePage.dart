@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:to_do_app/Custom/TodoCard.dart';
 
@@ -13,8 +15,11 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _MyWidgetState();
 }
 
+
 class _MyWidgetState extends State<HomePage> {
+
   AuthClass authClass = AuthClass();
+  final Stream<QuerySnapshot>_stream=FirebaseFirestore.instance.collection('Todo').snapshots();
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -95,70 +100,53 @@ class _MyWidgetState extends State<HomePage> {
             
       ],
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-          child: Column(
-            children: [
-              TodoCard(
-                title: "wake up",
+      body:StreamBuilder(
+        stream: _stream,
+        builder: (context, snapshot) {
+          if(!snapshot.hasData){
+            return Center(child: CircularProgressIndicator());
+          }
+          return ListView.builder(
+            itemCount: snapshot.data?.docs.length,
+            itemBuilder: (context,index){
+              IconData iconData;
+              Color iconColor;
+              Map<String,dynamic>document=snapshot.data?.docs[index].data() as Map<String,dynamic>;
+              switch(document["Category"]){
+                case "work:":
+                iconData=Icons.run_circle_outlined;
+                iconColor=Colors.white;
+                break;
+                case "WorkOut:":
+                iconData=Icons.alarm;
+                iconColor=Colors.red;
+                 break;
+                case "food:":
+                iconData=Icons.local_grocery_store;
+                iconColor=Colors.pink;
+                break;
+                case "Design:":
+                iconData=Icons.audiotrack;
+                iconColor=Colors.blue;
+                default:
+                iconData=Icons.run_circle_outlined;
+                iconColor=Colors.yellow;
+              }
+            return 
+           TodoCard(
+                title: document['title'] == null
+                ?"hello"
+                :document['title'],
                 check: true,
                 iconBgColor: Colors.white,
-                iconColor:Colors.red ,
-                iconData: Icons.alarm,
+                iconColor:iconColor ,
+                iconData: iconData,
                 time:"10 am" ,
 
 
-              ),
-              SizedBox(
-                height: 15,
-              ),
-               TodoCard(
-                title: "let's go gym",
-                check: true,
-                iconBgColor: Colors.white,
-                iconColor:Colors.red ,
-                iconData: Icons.alarm,
-                time:"10 am" ,
-
-
-              ),
-               SizedBox(
-                height: 15,
-              ),
-               TodoCard(
-                title: "Buy some food",
-                check: true,
-                iconBgColor: Colors.white,
-                iconColor:Colors.red ,
-                iconData: Icons.alarm,
-                time:"10 am" ,
-
-
-              ),
-               SizedBox(
-                height: 15,
-              ),
-               TodoCard(
-                title: "Testing something",
-                check: true,
-                iconBgColor: Colors.white,
-                iconColor:Colors.red ,
-                iconData: Icons.alarm,
-                time:"10 am" ,
-
-
-              ),
-               SizedBox(
-                height: 15,
-              ),
-               
-            ],
-          ),
-        ),
-      ),
+              );
+          });
+        } ),
      
     );
   }

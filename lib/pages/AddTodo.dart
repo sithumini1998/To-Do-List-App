@@ -13,7 +13,7 @@ class _MyWidgetState extends State<AddTodoPage> {
   TextEditingController _titleController=TextEditingController();
   TextEditingController _descriptionController=TextEditingController();
   String type="";
-  String Category="";
+  String category="";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,7 +116,7 @@ class _MyWidgetState extends State<AddTodoPage> {
         FirebaseFirestore.instance.collection('Todo').add({
           "title":_titleController.text,
           "task":type,
-          "Category":Category,
+          "Category":category,
           "description":_descriptionController.text,
         });
         Navigator.pop(context);
@@ -174,20 +174,20 @@ class _MyWidgetState extends State<AddTodoPage> {
     return InkWell(
       onTap: (){
         setState(() {
-          type:label;
+          type=label;
         });
       },
       child: Chip(
         backgroundColor:type==label?Colors.white: Color(color),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(  10,)),
-        label:Text(label,
-      style:TextStyle(
+        label:Text(label),
+        labelStyle:TextStyle(
             color:type==label?Colors.black: Colors.white,
             fontSize: 14,
             fontWeight: FontWeight.w600,
     
           ) ,
-          ),
+          
           labelPadding: EdgeInsets.symmetric(horizontal: 17,vertical: 3.7),
           ),
       
@@ -198,20 +198,20 @@ class _MyWidgetState extends State<AddTodoPage> {
     return InkWell(
       onTap: (){
          setState(() {
-          Category:label;
+          category=label;
         });
       },
       child: Chip(
-        backgroundColor:Category==label?Colors.white: Color(color),
+        backgroundColor:category==label?Colors.white: Color(color),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(  10,)),
-        label:Text(label,
-      style:TextStyle(
-            color:Category==label?Colors.black:  Colors.white,
+        label:Text(label),
+      labelStyle:TextStyle(
+            color:category==label?Colors.black:  Colors.white,
             fontSize: 14,
             fontWeight: FontWeight.w600,
     
           ) ,
-          ),
+          
           labelPadding: EdgeInsets.symmetric(horizontal: 17,vertical: 3.7),
           ),
     );
