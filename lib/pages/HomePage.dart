@@ -5,7 +5,8 @@ import 'package:to_do_app/Custom/TodoCard.dart';
 
 import 'package:to_do_app/Service/Auth_Service.dart';
 import 'package:to_do_app/pages/AddTodo.dart';
-import 'package:to_do_app/pages/SignUpPage.dart';
+//import 'package:to_do_app/pages/SignUpPage.dart';
+import 'package:to_do_app/pages/ViewData.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -132,19 +133,27 @@ class _MyWidgetState extends State<HomePage> {
                 iconData=Icons.run_circle_outlined;
                 iconColor=Colors.yellow;
               }
-            return 
-           TodoCard(
-                title: document['title'] == null
-                ?"hello"
-                :document['title'],
-                check: true,
-                iconBgColor: Colors.white,
-                iconColor:iconColor ,
-                iconData: iconData,
-                time:"10 am" ,
-
-
-              );
+            return InkWell(
+              onTap: (){
+                
+                //Navigator.push(context, MaterialPageRoute(builder: (builder)=>ViewData()));
+                
+                Navigator.push(context, MaterialPageRoute(builder: (builder) => ViewData(document: document,
+                id: snapshot.data!.docs[index].id,)));
+           },
+              child: TodoCard(
+                  
+                  title: document?["title"] ?? "hello",
+                  
+                  check: true,
+                  iconBgColor: Colors.white,
+                  iconColor:iconColor ,
+                  iconData: iconData,
+                  time:"10 am" ,
+            
+            
+                ),
+            );
           });
         } ),
      
